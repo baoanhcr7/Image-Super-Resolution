@@ -80,7 +80,8 @@ if __name__ == '__main__':
     for epoch in range(1, opt.nEpochs + 1):
         train(epoch)
         test()
-        checkpoint(epoch)
+        if(epoch%10 == 0):
+            checkpoint(epoch)
 
     fig, ax = plt.subplots()
     ax.plot(epochs_list,avg_loss_list,'r--')
