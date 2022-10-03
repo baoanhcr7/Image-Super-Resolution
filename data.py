@@ -2,8 +2,12 @@ from os.path import exists, join, basename
 from os import makedirs, remove
 from six.moves import urllib
 import tarfile
-from torchvision.transforms import Compose, CenterCrop, ToTensor, Resize
+from torchvision.transforms import Compose, CenterCrop, ToTensor, Resize, PILToTensor, ToPILImage
 from dataset import DatasetFromFolder
+from imgaug import augmenters as iaa
+import numpy as np
+
+
 
 def download_bsd(dest="dataset"):
     
@@ -43,16 +47,18 @@ def target_transform(crop_size):
     ])
     
 def get_training_set(upscale_factor):
-    root_dir = download_bsd()
-    train_dir = join(root_dir, "train")
+    # root_dir = download_bsd()
+    train_dir = 'dataset/CelebAMask-HQ/images/train'
+    # train_dir = join(root_dir, "train")
     crop_size = calculate_valid_crop_size(256, upscale_factor)
     return DatasetFromFolder(train_dir, 
                              input_transform=input_transform(crop_size, upscale_factor), 
                              target_transform=target_transform(crop_size))
 
 def get_testing_set(upscale_factor):
-    root_dir = download_bsd()
-    test_dir = join(root_dir, "test")
+    # root_dir = download_bsd()
+    test_dir = 'dataset/CelebAMask-HQ/images/test'
+    # test_dir = join(root_dir, "test")
     crop_size = calculate_valid_crop_size(256, upscale_factor)
     return DatasetFromFolder(test_dir,
                              input_transform=input_transform(crop_size, upscale_factor),
